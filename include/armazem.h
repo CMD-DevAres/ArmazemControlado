@@ -1,7 +1,7 @@
 #ifndef ARMAZEM_H
 #define ARMAZEM_H
 typedef struct {
-    float **matriz_sensores; //guardar peso das prateleiras
+    float matriz_sensores[4][5]; //guardar peso das prateleiras
     float *vetor_medias; //guarda soma dos pesos de cada corredor
     int qtd_linhas; //guarda quantidade de corredores
     int qtd_colunas; //guarda quantidade de prateleiras
@@ -13,7 +13,7 @@ typedef struct {
     float limite_critico; //define limite de carga
 } SistemaControle;
 
-int alocar_sistema(PlantaIndustrial *p, SistemaControle *c, int l, int c_col);
+int alocar_sistema(PlantaIndustrial *p, SistemaControle *c);
 
 void inicializar_sensores(PlantaIndustrial *p);
 
