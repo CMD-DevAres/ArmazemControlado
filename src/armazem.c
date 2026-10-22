@@ -24,3 +24,7 @@ int alocar_sistema(PlantaIndustrial *p, SistemaControle *c) {
     return 1; //retorna 1 se a alocação ocorrer corretamente
 
 }
+
+void inicializar_sensores(PlantaIndustrial *p) {
+    
+}
