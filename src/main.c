@@ -3,9 +3,10 @@
 #include "../include/armazem.h"
 
 int main(void) {
+    int sistema_inicializado = 0; //indica se o sistema ja foi inicializado
     int opcao; //guarda o numero escolhido pelo usuário no menu
-    PlantaIndustrial planta; //representa o armazem, matriz de pesos e os totais por corredor
-    SistemaControle controle; //sistema de segurançanca, autuadore e o limite critico
+    PlantaIndustrial planta = {0}; //representa o armazem, matriz de pesos e os totais por corredor
+    SistemaControle controle = {0}; //sistema de segurançanca, autuadore e o limite critico
 
    do {
         printf("\n=== SISTEMA DE ARMAZEM AUTOMATIZADO ===\n");
@@ -19,7 +20,17 @@ int main(void) {
 
         switch (opcao) {
             case 1:
-                printf("Inicializar sistema\n");
+                if (sistema_inicializado == 0) {
+                    if (alocar_sistema(&planta, &controle)) {
+                        inicializar_sensores(&planta);
+                        sistema_inicializado = 1;
+                        printf("Sistema inicializado com sucesso!\n");
+                    } else {
+                        printf("Erro ao inicializar o sistema!\n");
+                    }
+                } else {
+                    printf("O sistema ja foi inicializado!\n");
+                }
                 break;
 
             case 2:
