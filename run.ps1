@@ -1,5 +1,5 @@
-gcc src/main.c src/armazem.c -o programa.exe
+gcc -Wall -Wextra -g3 src/main.c src/armazem.c -o src/output/main.exe
 
 if ($LASTEXITCODE -eq 0) {
-    .\programa.exe
+    .\src\output\main.exe
 }
