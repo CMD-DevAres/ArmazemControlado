@@ -21,7 +21,7 @@ int main(void) {
         switch (opcao) {
             case 1:
                 if (sistema_inicializado == 0) {
-                    if (alocar_sistema(&planta, &controle)) {
+                    if (alocar_sistema(&planta, &controle, 4, 5)) {
                         inicializar_sensores(&planta);
                         sistema_inicializado = 1;
                         printf("Sistema inicializado com sucesso!\n");
