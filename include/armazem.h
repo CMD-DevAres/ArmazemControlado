@@ -17,6 +17,8 @@ int alocar_sistema(PlantaIndustrial *p, SistemaControle *c, int l, int c_col);
 
 void inicializar_sensores(PlantaIndustrial *p);
 
+void inicializar_atuadores(SistemaControle *c, int l);
+
 void processar_dados(PlantaIndustrial *p);
 
 void avaliar_seguranca(const PlantaIndustrial *p, SistemaControle *c);
