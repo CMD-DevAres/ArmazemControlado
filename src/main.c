@@ -4,11 +4,11 @@
 
 int main(void) {
     int sistema_inicializado = 0; //indica se o sistema ja foi inicializado
-    int opcao; //guarda o numero escolhido pelo usuário no menu
-    PlantaIndustrial planta = {0}; //representa o armazem, matriz de pesos e os totais por corredor
-    SistemaControle controle = {0}; //sistema de segurançanca, autuadore e o limite critico
+    int opcao; //guarda o numero escolhido pelo usuario no menu
+    PlantaIndustrial planta = {0}; //representa o armazem, matriz de pesos e as medias por corredor
+    SistemaControle controle = {0}; //representa o sistema de seguranca, os atuadores e o limite critico
 
-   do {
+    do {
         printf("\n=== SISTEMA DE ARMAZEM AUTOMATIZADO ===\n");
         printf("1 - Inicializar sistema\n");
         printf("2 - Processar dados dos sensores\n");
@@ -23,6 +23,7 @@ int main(void) {
                 if (sistema_inicializado == 0) {
                     if (alocar_sistema(&planta, &controle, 4, 5)) {
                         inicializar_sensores(&planta);
+                        inicializar_atuadores(&controle, planta.qtd_linhas);
                         sistema_inicializado = 1;
                         printf("Sistema inicializado com sucesso!\n");
                     } else {
@@ -34,15 +35,30 @@ int main(void) {
                 break;
 
             case 2:
-                printf("Processar dados dos sensores\n");
+                if (sistema_inicializado == 1) {
+                    processar_dados(&planta);
+                    printf("Dados processados com sucesso!\n");
+                } else {
+                    printf("Inicialize o sistema primeiro!\n");
+                }
                 break;
 
             case 3:
-                printf("Avaliar seguranca\n");
+                if (sistema_inicializado == 1) {
+                    avaliar_seguranca(&planta, &controle);
+                    printf("Avaliacao de seguranca concluida!\n");
+                    printf("Total de alarmes: %d\n", controle.total_alarmes);
+                } else {
+                    printf("Inicialize o sistema primeiro!\n");
+                }
                 break;
 
             case 4:
-                printf("Emitir relatorio\n");
+                if (sistema_inicializado == 1) {
+                    emitir_relatorio(&planta, &controle);
+                } else {
+                    printf("Inicialize o sistema primeiro!\n");
+                }
                 break;
 
             case 0:
@@ -55,6 +71,10 @@ int main(void) {
         }
 
     } while (opcao != 0);
+
+    if (sistema_inicializado == 1) {
+        liberar_memoria(&planta, &controle); //libera a memoria alocada pelo sistema
+    }
 
     return 0;
 }
