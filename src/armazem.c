@@ -99,10 +99,9 @@ void processar_dados(PlantaIndustrial *p) {
             soma += p->matriz_sensores[i][j]; //adiciona o peso a soma do corredor
         }
 
-        p->vetor_medias[i] = soma / p->qtd_colunas; //calcula a media dos pesos do corredor
+        p->vetor_medias[i] = soma; //calcula os pesos do corredor
     }
 }
-
 
 void avaliar_seguranca(const PlantaIndustrial *p, SistemaControle *c) {
     int i; //contador utilizado no ciclo
@@ -132,8 +131,8 @@ void emitir_relatorio(const PlantaIndustrial *p, const SistemaControle *c) {
             printf("Prateleira %d: %.2f\n", j + 1, p->matriz_sensores[i][j]); //exibe o peso da prateleira
         }
 
-        printf("Media do corredor: %.2f\n", p->vetor_medias[i]); //exibe a media dos pesos do corredor
-
+        printf("Somatorio do corredor: %.2f\n", p->vetor_medias[i]);
+        
         if (c->vetor_atuadores[i] == 1) {
             printf("Atuador: LIBERADO\n"); //informa que o atuador esta liberado
         } else {
