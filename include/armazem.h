@@ -2,7 +2,7 @@
 #define ARMAZEM_H
 typedef struct {
     float **matriz_sensores; //guardar peso das prateleiras
-    float *vetor_medias; //guarda soma dos pesos de cada corredor
+    float *vetor_somatorio; //guarda soma dos pesos de cada corredor
     int qtd_linhas; //guarda quantidade de corredores
     int qtd_colunas; //guarda quantidade de prateleiras
 } PlantaIndustrial;

@@ -30,9 +30,9 @@ int alocar_sistema(PlantaIndustrial *p, SistemaControle *c, int l, int c_col) {
         }
     }
 
-    p->vetor_medias = malloc(l * sizeof(float)); //ponteiro acessa vetor_medias e aloca memoria para l medias
+    p->vetor_somatorio = malloc(l * sizeof(float)); //ponteiro acessa vetor_somatorio e aloca memoria para l somas
 
-    if (p->vetor_medias == NULL) {
+    if (p->vetor_somatorio == NULL) {
         for (i = 0; i < l; i++) { //percorre todas as linhas da matriz
             free(p->matriz_sensores[i]); //libera memoria de cada linha
         }
@@ -40,14 +40,14 @@ int alocar_sistema(PlantaIndustrial *p, SistemaControle *c, int l, int c_col) {
         free(p->matriz_sensores); //libera memoria dos ponteiros das linhas
         p->matriz_sensores = NULL; //atribui NULL ao ponteiro da matriz
 
-        return 0; //retorna 0 se a alocacao do vetor de medias falhar
+        return 0; //retorna 0 se a alocacao do vetor de somatorio falhar
     }
 
     c->vetor_atuadores = malloc(l * sizeof(int)); //ponteiro acessa vetor_atuadores e aloca memoria para um atuador por linha
 
     if (c->vetor_atuadores == NULL) {
-        free(p->vetor_medias); //libera memoria alocada para vetor_medias
-        p->vetor_medias = NULL; //atribui NULL ao ponteiro vetor_medias
+        free(p->vetor_somatorio); //libera memoria alocada para vetor_somatorio
+        p->vetor_somatorio = NULL; //atribui NULL ao ponteiro vetor_somatorio
 
         for (i = 0; i < l; i++) { //percorre todas as linhas da matriz
             free(p->matriz_sensores[i]); //libera memoria de cada linha
@@ -99,7 +99,7 @@ void processar_dados(PlantaIndustrial *p) {
             soma += p->matriz_sensores[i][j]; //adiciona o peso a soma do corredor
         }
 
-        p->vetor_medias[i] = soma; //calcula os pesos do corredor
+        p->vetor_somatorio[i] = soma; //calcula os pesos do corredor
     }
 }
 
@@ -109,7 +109,7 @@ void avaliar_seguranca(const PlantaIndustrial *p, SistemaControle *c) {
     c->total_alarmes = 0; //reinicia o contador de alarmes
 
     for (i = 0; i < p->qtd_linhas; i++) { //percorre todos os corredores
-        if (p->vetor_medias[i] > c->limite_critico) {
+        if (p->vetor_somatorio[i] > c->limite_critico) {
             c->vetor_atuadores[i] = 0; //bloqueia o atuador do corredor
             c->total_alarmes++; //incrementa o contador de alarmes
         } else {
@@ -131,7 +131,7 @@ void emitir_relatorio(const PlantaIndustrial *p, const SistemaControle *c) {
             printf("Prateleira %d: %.2f\n", j + 1, p->matriz_sensores[i][j]); //exibe o peso da prateleira
         }
 
-        printf("Somatorio do corredor: %.2f\n", p->vetor_medias[i]);
+        printf("Somatorio do corredor: %.2f\n", p->vetor_somatorio[i]);
         
         if (c->vetor_atuadores[i] == 1) {
             printf("Atuador: LIBERADO\n"); //informa que o atuador esta liberado
@@ -155,8 +155,8 @@ void liberar_memoria(PlantaIndustrial *p, SistemaControle *c) {
     free(p->matriz_sensores); //libera a memoria dos ponteiros das linhas
     p->matriz_sensores = NULL; //indica que a matriz nao possui memoria alocada
 
-    free(p->vetor_medias); //libera a memoria do vetor de medias
-    p->vetor_medias = NULL; //indica que o vetor nao possui memoria alocada
+    free(p->vetor_somatorio); //libera a memoria do vetor somatorio
+    p->vetor_somatorio = NULL; //indica que o vetor nao possui memoria alocada
 
     free(c->vetor_atuadores); //libera a memoria do vetor de atuadores
     c->vetor_atuadores = NULL; //indica que o vetor nao possui memoria alocada
